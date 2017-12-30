@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+function pipe(initial, ...fns) {
+  return fns.reduce((val, f) => f(val), initial)
+}
+
+function showHelp() {
+  console.error(`
+markdown-to-anki <filename>
+  `)
+}
+
+const fs = require('fs')
+const marked = require('marked')
+const argv = process.argv.slice(2)
+
+if (argv[0] === '--help' || argv[0] === 'help' || argv[0] === '-h') {
+  showHelp()
+  process.exit(1)
+}
+
+const filename = argv[0]
+
+if (typeof filename === 'undefined') {
+  console.error('Please pass a filename')
+  showHelp()
+  process.exit(1)
+}
+
+if (! fs.existsSync(filename)) {
+  console.error(`File not found, "${filename}"!`)
+  process.exit(1)
+}
+
+// Read file contents and remove the tabs.
+// Not trying to be political, the output format we use for the cards separates
+// the card faces with tabs, so having tabs in the card content will most likely
+// break everything.
+const fileContents = fs.readFileSync(filename)
+  .toString()
+  .replace(/\t/g, '    ')
+
+const cards = pipe(
+  fileContents,
+  // find the cards
+  contents => contents.split('\n===\n'),
+  // separate cards into front and back (faces)
+  cards => cards.map(card => card.split('\n---\n')),
+  // transform into markdown and remove newlines
+  cards => cards.map(card => card.map(face => marked(face).replace(/\n/g, ' '))),
+  // one card is a single line with the front and back of the card
+  // separated by a tab character
+  cards => cards.map(([front, back]) => front + '\t' + back),
+  // cards are separated by newlines
+  cards => cards.join('\n'),
+)
+
+console.log(cards)

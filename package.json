@@ -1,0 +1,17 @@
+{
+  "name": "markdown-to-anki",
+  "description": "Convert a markdown file to a format that can be imported to anki flashcards",
+  "author": {
+    "name": "Zach Gulde",
+    "email": "zachgulde@gmail.com",
+    "url": "https://zgul.de"
+  },
+  "bin": {
+      "markdown-to-anki": "./markdown-to-anki"
+  },
+  "version": "0.2.3",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^0.3.6"
+  }
+}
