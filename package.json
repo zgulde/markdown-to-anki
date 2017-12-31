@@ -13,5 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "marked": "^0.3.6"
-  }
+  },
+  "repository": "https://github.com/zgulde/markdown-to-anki"
 }
