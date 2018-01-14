@@ -17,6 +17,9 @@ markdown-to-anki flashcards.md > flashcards.txt
 # then go open flashcards.txt with your anki app
 ```
 
+When importing the cards, make sure the checkbox for "Allow HTML in fields" is
+checked.
+
 ## Markdown Format
 
 This tool expects your markdown to be specifically formatted, and deviations
